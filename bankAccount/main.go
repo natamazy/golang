@@ -6,7 +6,7 @@ import (
 )
 
 type Account struct {
-	mu       sync.Mutex
+	mu       *sync.Mutex
 	balance  int64
 	isClosed bool
 }
@@ -19,6 +19,7 @@ func Open(amount int64) *Account {
 	return &Account{
 		balance:  amount,
 		isClosed: false,
+		mu:       &sync.Mutex{},
 	}
 }
 
