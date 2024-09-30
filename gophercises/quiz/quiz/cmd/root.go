@@ -28,6 +28,9 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
+		fmt.Println("Press enter to start")
+		fmt.Scanln()
+
 		timer := time.NewTimer(time.Duration(runtimeSeconds) * time.Second)
 		answersCh := make(chan struct{})
 
