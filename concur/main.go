@@ -1,20 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	c := make(chan int)
+	c1 := make(chan string)
+	c2 := make(chan string)
 
 	go func() {
-		sum := 0
-		for i := 0; i <= 100; i++ {
-			fmt.Println("IDX from first func: ", i)
-			sum += i
+		for {
+			c1 <- "Every 500ms"
+			time.Sleep(time.Millisecond * 500)
 		}
-		c <- sum
 	}()
 
-	output := <-c
+	go func() {
+		for {
+			c2 <- "Every 2 seconds"
+			time.Sleep(time.Second * 2)
+		}
+	}()
 
-	fmt.Println(output)
+	for {
+		select {
+		case msg1 := <-c1:
+			fmt.Println(msg1)
+		case msg2 := <-c2:
+			fmt.Println(msg2)
+		}
+	}
 }
