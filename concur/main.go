@@ -5,30 +5,21 @@ import (
 	"time"
 )
 
-func main() {
-	c1 := make(chan string)
-	c2 := make(chan string)
-
-	go func() {
-		for {
-			c1 <- "Every 500ms"
-			time.Sleep(time.Millisecond * 500)
-		}
-	}()
-
-	go func() {
-		for {
-			c2 <- "Every 2 seconds"
-			time.Sleep(time.Second * 2)
-		}
-	}()
-
-	for {
-		select {
-		case msg1 := <-c1:
-			fmt.Println(msg1)
-		case msg2 := <-c2:
-			fmt.Println(msg2)
-		}
+func numbers() {
+	for i := 1; i <= 5; i++ {
+		time.Sleep(250 * time.Millisecond)
+		fmt.Printf("%d ", i)
 	}
+}
+func alphabets() {
+	for i := 'a'; i <= 'e'; i++ {
+		time.Sleep(400 * time.Millisecond)
+		fmt.Printf("%c ", i)
+	}
+}
+func main() {
+	go numbers()
+	go alphabets()
+	time.Sleep(3000 * time.Millisecond)
+	fmt.Println("main terminated")
 }
